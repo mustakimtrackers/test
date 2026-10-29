@@ -1,0 +1,33 @@
+# Future Plan: Transforming the ERP into a SaaS Platform (Single Codebase, Multiple Databases)
+
+## Goal
+Host the ERP on a single VPS and serve multiple clients (3-5+) on separate domains while maintaining a single unified codebase. All client data must be isolated, and updates pushed to the central codebase should instantly reflect across all tenants.
+
+## Implementation Steps
+
+### 1. Master Database Setup
+- Create a central "Master Database".
+- Create a `tenants` table to map domain names to specific client databases (e.g., `domain` -> `client1.com`, `db_name` -> `erp_client1`, `db_user` -> `user1`, `db_pass` -> `pass1`).
+
+### 2. Dynamic Database Connection (config/database.php)
+- Modify `config/database.php` to capture the incoming request domain (`$_SERVER['HTTP_HOST']`).
+- Query the Master Database using the domain name to retrieve the tenant's specific database credentials.
+- Connect the ERP application to the tenant's database dynamically.
+
+### 3. File Upload Isolation
+- Refactor the file upload logic across the system (e.g., product images, logos).
+- Instead of saving directly to `uploads/`, save files into tenant-specific subfolders (e.g., `uploads/{TENANT_ID}/products/`).
+- Ensure the database stores the correct relative path for the tenant.
+
+### 4. Database-Driven App Settings (Logo, Favicon, Company Name)
+- Create a `settings` table inside every tenant's database to hold their unique logo path, favicon path, company name, address, etc.
+- Build a Settings UI where clients can upload and update their logo and details.
+- Update `header.php`, `navbar.php`, and invoice templates to fetch the logo and company name dynamically from the tenant's `settings` table rather than hardcoded configurations.
+
+### 5. Master Admin Panel (Super Admin)
+- Build a separate, hidden "Master Panel" application connected ONLY to the Master Database.
+- Features:
+  - Add a new customer/domain.
+  - Automate tenant provisioning (Background script creates a new database, imports the base SQL schema, registers the domain in the `tenants` table, and creates a tenant-specific `uploads` folder).
+  - Suspend/Activate clients (block access to the ERP based on payment status).
+  - Global announcements or broadcasts to all tenants.

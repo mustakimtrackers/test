@@ -1,0 +1,319 @@
+/* assets/css/print_standard.css */
+/* Modernized Print & PDF Framework */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --print-text: #111827;
+    --print-muted: #6b7280;
+    --print-border: #e5e7eb;
+    --print-bg: #f9fafb;
+    --print-accent: #000000;
+}
+
+/* Reset for print logic */
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--print-text);
+    font-size: 10pt; /* Optimal for A4 */
+    line-height: 1.5;
+    background: #e5e7eb; /* Gray bg for screen preview */
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+body * {
+    visibility: hidden;
+}
+
+#printableArea,
+#printableArea * {
+    visibility: visible;
+}
+
+/* Print Container - Makes it look like a piece of paper on screen */
+#printableArea {
+    position: relative;
+    background: #ffffff;
+    width: 210mm; /* A4 width */
+    min-height: 297mm; /* A4 height */
+    padding: 20mm 20mm;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+}
+
+@page {
+    size: A4 portrait;
+    margin: 0; /* Let the container handle margins */
+}
+
+@media print {
+    body {
+        background: #ffffff;
+        padding: 0;
+        display: block;
+    }
+
+    #printableArea {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        min-height: 100vh;
+        margin: 0;
+        padding: 15mm; /* Inner padding for actual print */
+        box-shadow: none;
+    }
+}
+
+/* Document Header Standard */
+.document-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 2px solid var(--print-accent);
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.company-branding h1 {
+    margin: 0 0 5px 0;
+    font-size: 24pt;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--print-accent);
+}
+
+.company-details {
+    color: var(--print-muted);
+    font-size: 9pt;
+    line-height: 1.6;
+}
+
+.document-meta {
+    text-align: right;
+}
+
+.document-type {
+    display: inline-block;
+    font-size: 16pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--print-muted);
+    margin-bottom: 10px;
+}
+
+.meta-grid {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 4px 15px;
+    text-align: right;
+    font-size: 9pt;
+}
+
+.meta-label {
+    color: var(--print-muted);
+    font-weight: 500;
+}
+
+.meta-value {
+    font-weight: 700;
+    color: var(--print-text);
+}
+
+/* Info Blocks (Bill To, Ship To, Summary Cards) */
+.info-blocks {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.info-box {
+    flex: 1;
+    background: var(--print-bg) !important;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid var(--print-border);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.info-box-title {
+    font-size: 8pt;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--print-muted);
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--print-border);
+    padding-bottom: 5px;
+}
+
+/* Data Tables */
+.table-print {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 30px;
+    border: 1px solid var(--print-border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table-print th {
+    background-color: var(--print-bg) !important;
+    color: var(--print-text) !important;
+    font-weight: 600;
+    font-size: 9pt;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--print-border);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.table-print td {
+    padding: 12px 15px;
+    font-size: 9.5pt;
+    border-bottom: 1px solid var(--print-border);
+}
+
+.table-print tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Zebra striping for readability */
+.table-print tbody tr:nth-child(even) td {
+    background-color: rgba(249, 250, 251, 0.5) !important;
+    -webkit-print-color-adjust: exact;
+}
+
+/* Totals / Summary Area */
+.summary-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: -15px;
+}
+
+.summary-box {
+    width: 300px;
+    border: 1px solid var(--print-border);
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    background: #ffffff;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    border-bottom: 1px solid var(--print-border);
+    font-size: 9.5pt;
+}
+
+.summary-row:last-child {
+    border-bottom: none;
+}
+
+.summary-label {
+    color: var(--print-muted);
+    font-weight: 500;
+}
+
+.summary-value {
+    font-weight: 600;
+}
+
+.summary-row.grand-total {
+    background: var(--print-bg) !important;
+    -webkit-print-color-adjust: exact;
+}
+
+.summary-row.grand-total .summary-label {
+    color: var(--print-text);
+    font-weight: 700;
+    font-size: 11pt;
+}
+
+.summary-row.grand-total .summary-value {
+    font-size: 12pt;
+    font-weight: 800;
+}
+
+/* Signatures & Footer */
+.document-footer {
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.signature-box {
+    width: 200px;
+    text-align: center;
+}
+
+.signature-line {
+    border-top: 1px solid var(--print-text);
+    margin-top: 50px;
+    padding-top: 5px;
+    font-size: 9pt;
+    font-weight: 500;
+}
+
+.system-credit {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 8pt;
+    color: var(--print-muted);
+    border-top: 1px solid var(--print-border);
+    padding-top: 10px;
+}
+
+/* Utilities */
+.text-end { text-align: right !important; }
+.text-center { text-align: center !important; }
+.fw-bold { font-weight: 700 !important; }
+.text-muted { color: var(--print-muted) !important; }
+
+/* Control Print Button Position */
+.print-controls {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+    background: rgba(255,255,255,0.9);
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.print-controls .btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary { background: #111827; color: white; }
+.btn-secondary { background: #e5e7eb; color: #374151; }
+
+.no-print { display: none !important; }
+
+@media print {
+    .print-controls {
+        display: none !important;
+    }
+}
